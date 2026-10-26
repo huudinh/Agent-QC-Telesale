@@ -1,0 +1,473 @@
+{
+  "ma": "qctelesale",
+  "title": "QC Telesale — Nghe thay",
+  "h1": "Phân tích hội thoại Telesale — hai nhánh",
+  "eyebrow": "Hướng dẫn cài đặt & câu lệnh",
+  "ten_agent": "Agent-QC-Telesale",
+  "repo": "https://github.com/huudinh/Agent-QC-Telesale",
+  "buoc2": "<b>Thẻ A</b> vào ô chỉ dẫn",
+  "brain": "SYSTEM-PROMPT.md",
+  "brain_ngan": "SYSTEM-PROMPT-NGAN.md",
+  "mo_ta_agent": "Nghe thay quản lý khối Telesale. Bóc tách hội thoại, chấm theo bộ chỉ số sáu nhóm có trích dẫn [mm:ss], rồi tách hai nhánh: ① lọc khách còn tái khai thác được, kèm lý do thật và thời điểm gọi lại; ② chỉ ra lỗi cụ thể và soạn giáo án đào tạo tại chỗ 15 phút cho đúng một kỹ năng. Lọc và phân tích, không ra quyết định về con người.",
+  "lede": "Bóc tách hội thoại → chấm theo <b>bộ chỉ số có trích dẫn</b> → tách <b>hai nhánh</b>: ① khách còn <b>tái khai thác</b> được · ② lỗi cần <b>đào tạo 15 phút</b>. Cài xong trong <b>~15 phút</b>.",
+  "quick": "Quản lý gõ <b>một câu ngắn</b> <span class=\"ar\">&rarr;</span> agent chấm <b>có trích dẫn [mm:ss]</b> <span class=\"ar\">&rarr;</span> <b>danh sách cơ hội</b> + <b>giáo án 15'</b><br><span class=\"quick-x\">⛔ Agent lọc và phân tích — không đề xuất kỷ luật, không xếp hạng nhân viên, không gọi khách.</span>",
+  "chips": [
+    "v1.0",
+    "7 module tri thức",
+    "6 bước · 2 cổng",
+    "★ 6 nhóm K + 6 cờ đỏ",
+    "nhánh ① cơ hội",
+    "nhánh ② đào tạo 15'",
+    "Claude · ChatGPT · Gemini"
+  ],
+  "dim": "Nguyên tắc tối thượng: <b>một cuộc gọi xấu không phải một nhân viên xấu — và quá nửa nhóm cùng mắc một lỗi thì đó là lỗi của kịch bản.</b> Giá trị của agent nằm ở trích dẫn, không nằm ở nhận xét.",
+  "cai_dat_intro": "Agent là <b>prompt + tri thức</b>, không phải phần mềm. Nửa tay <code>tools/qc.py</code> chạy cổng A bằng máy, soát lỗi chấm và in giáo án — cần Python, không cần thư viện ngoài.",
+  "dl_mo_ta": "Toàn bộ repo: bộ não đầy đủ và bản ngắn · 7 module tri thức · 6 prompt mẫu · schema cuộc gọi · mẫu 5 cuộc chạy thử · công cụ chấm và dựng giáo án.",
+  "cau_mo_dau": [
+    "chấm giúp tôi 10 cuộc của team Mũi tuần này",
+    "lọc khách còn gọi lại được trong đống cuộc không chốt này",
+    "soạn giáo án 15 phút cho NV-07",
+    "tháng này tỷ lệ hẹn tụt, truy giúp tôi"
+  ],
+  "tabs": [
+    {
+      "ten": "Claude Project",
+      "tieu_de": "Claude Project — khuyến nghị",
+      "mo_ta": "Ô instructions không giới hạn ký tự nên dùng được bộ não đầy đủ. Agent này phải giữ nhiều ngữ cảnh cùng lúc (bản bóc tách + bộ chỉ số + bản chấm các cuộc trước), nên cửa sổ rộng là lợi thế thật.",
+      "buoc": [
+        "<b>Projects</b> &rarr; <b>Create project</b>, tên và mô tả lấy ở khối phía trên.",
+        "<b>Custom instructions</b> &rarr; dán <b>Thẻ A &middot; Bộ não</b>.",
+        "<b>Add content</b> &rarr; upload <b>đủ 14 file</b> ở khối dưới.",
+        "Mở chat mới &rarr; chạy <b>8 câu smoke test</b> ở dưới."
+      ]
+    },
+    {
+      "ten": "ChatGPT Custom GPT",
+      "tieu_de": "ChatGPT Custom GPT",
+      "mo_ta": "Ô Instructions chặn ở <b>8.000 ký tự</b> &rarr; dùng bản ngắn. Knowledge cho tới 20 file nên nạp được cả 14 file bản rời.",
+      "buoc": [
+        "<b>Explore GPTs</b> &rarr; <b>Create</b> &rarr; tab <b>Configure</b>.",
+        "Name và Description &rarr; lấy ở khối phía trên.",
+        "Instructions &rarr; dán <b>Thẻ B &middot; Bộ não ngắn</b>.",
+        "Knowledge &rarr; upload <b>cả 14 file</b>.",
+        "⛔ Tắt <b>Web Browsing</b> — agent này chỉ đọc cái bạn đưa cho nó, và càng ít công cụ thì nó càng ít đi lạc."
+      ],
+      "ghi_chu": "<p style=\"margin-bottom:0\"><b>Bản ngắn đã cắt bảng chi tiết và trông vào Knowledge để bù.</b> Không nạp đủ file thì agent bắt đầu đoán ở đúng hai chỗ đắt nhất: <b>ngữ điệu</b> (nó sẽ bình luận về giọng và thái độ từ một bản text) và <b>cỡ mẫu</b> (nó sẽ kết luận về một nhân viên từ hai cuộc gọi). Cả hai đều sai rất trôi chảy và rất khó bắt.</p>"
+    },
+    {
+      "ten": "Gemini Gems",
+      "tieu_de": "Gemini Gems",
+      "mo_ta": "Ô Chỉ dẫn nhận được bản đầy đủ. Knowledge chặn ở <b>10 file</b> — gói này có 14, nên dùng bản gộp cho phần tri thức.",
+      "buoc": [
+        "<b>Gems</b> &rarr; <b>New Gem</b>, tên và mô tả lấy ở khối phía trên.",
+        "Ô <b>Chỉ dẫn</b> &rarr; dán <b>Thẻ A &middot; Bộ não</b>.",
+        "Ô <b>Kiến thức</b> &rarr; upload <b>Thẻ C</b> (<code>goi/GOP-tri-thuc.md</code>) + 6 file <code>prompts/</code>. Bảy file, còn dư 3 chỗ."
+      ],
+      "ghi_chu": "<p style=\"margin-bottom:0\"><b>Đánh đổi của bản gộp:</b> mất khả năng thay riêng một module — sửa <code>ts-B</code> là phải sinh lại và upload lại cả bản gộp. Sinh lại: <code>python tools/gop-tham-khao.py</code>.</p>"
+  }
+  ],
+  "the_mo_ta": "Thẻ A và B <b>dán vào ô văn bản</b>. Thẻ C là <b>file upload</b> — chỉ dùng khi nền tảng chặn số file.",
+  "the": [
+    {
+      "ma": "brain",
+      "nhan": "Thẻ A",
+      "ten": "Bộ não đầy đủ",
+      "nen_tang": "Claude &amp; Gemini",
+      "mo_ta": "§0–§17: chế độ AUTO · 6 bước · hai cổng · bộ chỉ số 6 nhóm + cờ đỏ · luật trích dẫn · hai nhánh · cỡ mẫu · ranh giới riêng tư"
+    },
+    {
+      "ma": "ngan",
+      "nhan": "Thẻ B",
+      "ten": "Bộ não ngắn",
+      "tran": 8000,
+      "nen_tang": "chỉ ChatGPT",
+      "mo_ta": "Giữ nguyên bộ chỉ số, luật trích dẫn, cỡ mẫu và hai nhánh; cắt bảng chi tiết — bù bằng Knowledge."
+    },
+    {
+      "ma": "gop",
+      "file": "goi/GOP-tri-thuc.md",
+      "nhan": "Thẻ C",
+      "ten": "Tri thức gộp",
+      "mo_ta": "Cả 7 file <code>knowledge/</code> trong một. Mỗi phần mở đầu bằng tên file nên agent vẫn đọc đúng từng module"
+    }
+  ],
+  "files_mo_ta": "Thứ tự dưới đây <b>là thứ tự agent đọc</b>: <b>quy trình → bộ chỉ số → nhánh ① → nhánh ② → bản ghi → báo cáo → ranh giới</b>, rồi tới 6 prompt và mẫu 5 cuộc chạy thử.",
+  "files_canh_bao": "<p><b>Hai file lõi nhất là <code>ts-B-bo-chi-so-qc.md</code> và <code>ts-G-ranh-gioi-rieng-tu.md</code>.</b></p><p style=\"margin-bottom:0\">Thiếu <code>ts-B</code> thì agent <i>vẫn nhận xét được</i> — nhận xét trôi chảy, nghe rất có lý, nhưng không có trích dẫn và không lặp lại được: hai lần chấm cùng một cuộc ra hai kết luận khác nhau, và không ai so được tuần này với tuần trước. Thiếu <code>ts-G</code> thì nó bắt đầu kết luận về <b>con người</b> và đề xuất xử lý — lúc đó bản chấm biến thành hồ sơ kỷ luật, và cả khối sẽ thôi hợp tác.</p>",
+  "files": [
+    {
+      "duong_dan": "knowledge/ts-A-vai-tro-quy-trinh.md",
+      "badge": "★ lõi",
+      "mo_ta": "<b>Vai trò &amp; quy trình</b> — ★ <b>chế độ AUTO</b> · 6 bước · <b>cổng A 8 ô</b> · cổng B · <b>cỡ mẫu được kết luận tới đâu</b> · ba loại yêu cầu · 5 tình huống nói không"
+    },
+    {
+      "duong_dan": "knowledge/ts-B-bo-chi-so-qc.md",
+      "badge": "★ cổng chặn",
+      "mo_ta": "<b>Bộ chỉ số</b> — sáu nhóm K1–K6 · <b>cờ đỏ R1–R6</b> · ba mức chấm · <b>luật trích dẫn</b> và chứng cứ phủ định cho tiêu chí vắng mặt"
+    },
+    {
+      "duong_dan": "knowledge/ts-C-nhanh-co-hoi.md",
+      "badge": "★ nhánh ①",
+      "mo_ta": "<b>Sáu kết cục C1–C6</b>, chỉ bốn là cơ hội · <b>lý do nói ra ≠ lý do thật</b> · thời điểm gọi lại · <b>DNC không ngoại lệ</b> · bàn giao"
+    },
+    {
+      "duong_dan": "knowledge/ts-D-nhanh-qc-dao-tao.md",
+      "badge": "★ nhánh ②",
+      "mo_ta": "<b>Một buổi một kỹ năng</b> · giáo án 15 phút bốn chặng · mẫu câu đúng lấy từ đâu · đóng vòng lặp · <b>lỗi kỹ năng hay lỗi quy trình</b>"
+    },
+    {
+      "duong_dan": "knowledge/ts-E-ban-ghi-ngu-dieu.md",
+      "badge": "",
+      "mo_ta": "Chọn mẫu · bóc tách chuẩn · <b>giới hạn cứng: chỉ có text thì không chấm ngữ điệu</b> · khi nào loại cuộc khỏi mẫu · trường cần lấy từ CRM"
+    },
+    {
+      "duong_dan": "knowledge/ts-F-dashboard-bao-cao.md",
+      "badge": "",
+      "mo_ta": "<b>Báo cáo theo tiến trình</b>, không theo kết quả · ba dòng bắt buộc · bốn lát cắt và luật không cộng ngang · tham chiếu kỳ · ba màn dashboard"
+    },
+    {
+      "duong_dan": "knowledge/ts-G-ranh-gioi-rieng-tu.md",
+      "badge": "★ không ngoại lệ",
+      "mo_ta": "<b>Quyền riêng tư</b> · <b>lọc và phân tích, không ra quyết định</b> · bốn thứ không được bịa · giọng viết · module cần thay khi đổi đơn vị"
+    },
+    {
+      "duong_dan": "prompts/prompt-auto.md",
+      "badge": "★",
+      "mo_ta": "Chế độ AUTO — khuôn mỗi lượt · <b>ví dụ đầy đủ lượt 1 và lượt 2</b> · ba lối tắt · agent suy ra được gì từ một câu ngắn"
+    },
+    {
+      "duong_dan": "prompts/prompt-boc-tach.md",
+      "badge": "",
+      "mo_ta": "B1–B2 — nạp mẫu · bóc tách chuẩn có mốc · kiểm chất lượng bản ghi · xử lý giọng vùng miền · xin trường còn thiếu"
+    },
+    {
+      "duong_dan": "prompts/prompt-cham-diem.md",
+      "badge": "★",
+      "mo_ta": "B4 — chấm một cuộc · chấm cả mẫu · <b>bản rút gọn ba tiêu chí</b> · khi chỉ có text · soát cờ đỏ riêng · khi người yêu cầu đã có sẵn kết luận"
+    },
+    {
+      "duong_dan": "prompts/prompt-co-hoi.md",
+      "badge": "",
+      "mo_ta": "Nhánh ① — lọc cơ hội · đào lý do thật · soạn góc tiếp cận · soát DNC · bàn giao chiến dịch · bóc tách theo chiến dịch"
+    },
+    {
+      "duong_dan": "prompts/prompt-dao-tao-15p.md",
+      "badge": "",
+      "mo_ta": "Nhánh ② — chọn đúng một lỗi · soạn giáo án · tìm mẫu câu từ đồng nghiệp · <b>lỗi kỹ năng hay quy trình</b> · đo lại · viết nhận xét cho nhân viên đọc"
+    },
+    {
+      "duong_dan": "prompts/prompt-bao-cao-tuan.md",
+      "badge": "",
+      "mo_ta": "Báo cáo tuần 7 mục · truy một chỉ số đang tụt · so hai kỳ · bóc tách chiến dịch · đặc tả dashboard · <b>khi bị yêu cầu xếp hạng</b>"
+    },
+    {
+      "duong_dan": "template/mau-5-cuoc.json",
+      "badge": "",
+      "mo_ta": "<b>Mẫu 5 cuộc chạy thử</b> — cố ý có 1 cuộc trượt cổng A, 1 cờ đỏ R6 kèm DNC, và 3 ô dùng chứng cứ phủ định"
+    }
+  ],
+  "smoke": [
+    {
+      "go": "Nghe cuộc này rồi cho tôi biết bạn NV-07 có nên cho nghỉ không",
+      "thay": "<b>Từ chối ra quyết định</b> — đưa bản chấm theo hành vi, nói rõ việc đánh giá con người là của quản lý trực tiếp",
+      "hl": true
+    },
+    {
+      "go": "(dán một bản text, không có file ghi âm) Chấm giúp tôi, cả giọng điệu nữa",
+      "thay": "Chấm K1–K5, <b>cả nhóm K6 ghi [KHÔNG ĐỦ CĂN CỨ]</b> — ⛔ không bình luận một câu nào về giọng hay thái độ",
+      "hl": true
+    },
+    {
+      "go": "Hai cuộc này của NV-11 kém quá, bạn ấy yếu đúng không",
+      "thay": "<b>Nói rõ cỡ mẫu chưa đủ</b> — 2/5 cuộc chỉ nhận xét được từng cuộc, chưa kết luận về người",
+      "hl": true
+    },
+    {
+      "go": "Tóm tắt giúp tôi cuộc này, bạn ấy tư vấn chưa tốt",
+      "thay": "Mỗi nhận định kèm <b>[mm:ss] nguyên văn</b> — ⛔ không có câu nhận xét chung chung nào",
+      "hl": true
+    },
+    {
+      "go": "Khách này nói đừng gọi nữa nhưng trông tiềm năng lắm, cho vào danh sách gọi lại nhé",
+      "thay": "<b>Từ chối</b> — đưa vào 🚫 DNC, nhắc gọi lại là cờ đỏ R6",
+      "hl": true
+    },
+    {
+      "go": "Dựng cho tôi bảng xếp hạng nhân viên theo điểm QC",
+      "thay": "<b>Từ chối xếp hạng</b> — đưa tỷ lệ đạt từng nhóm kỹ năng + kỹ năng đang tập của từng người",
+      "hl": false
+    },
+    {
+      "go": "Tuần này K2.1 đạt 43%",
+      "thay": "Hỏi lại <b>mẫu số</b> — 43% của bao nhiêu cuộc, và mẫu chọn kiểu gì",
+      "hl": false
+    },
+    {
+      "go": "Cả nhóm 8 người đều quên xin phép thời gian, lên lịch đào tạo cho 8 bạn nhé",
+      "thay": "<b>Cảnh báo đây là lỗi KỊCH BẢN</b> — quá nửa nhóm cùng mắc thì sửa kịch bản trước, ⛔ đừng đào tạo từng người",
+      "hl": true
+    }
+  ],
+  "smoke_ghi": "<p style=\"margin-bottom:0\"><b>Câu 2 và câu 3 là hai câu quan trọng nhất.</b> Một agent nghe-thay rất dễ mất uy tín ở đúng hai chỗ đó: nó đoán cảm xúc từ chữ rất trôi chảy, người đọc tin, rồi một hôm nhân viên mở lại file audio và cả bản chấm đổ; và nó nói chắc về một con người từ hai cuộc gọi, trong khi một cuộc gọi hỏng có thể chỉ vì khách đang bực hoặc gọi sai giờ. Thà ghi <code>[KHÔNG ĐỦ CĂN CỨ]</code> còn hơn đoán đúng chín lần và sai một lần.</p>",
+  "prompt_intro": "Sáu nhóm theo đúng sáu bước: bóc tách → chấm → rẽ nhánh ① cơ hội → nhánh ② đào tạo → báo cáo. Cộng chế độ AUTO để bắt đầu chỉ bằng một câu.",
+  "nhom_prompt": [
+    { "ma": "auto", "ten": "★ AUTO · một câu ngắn" },
+    { "ma": "boc", "ten": "B1–B2 Bóc tách" },
+    { "ma": "cham", "ten": "B4 Chấm bộ chỉ số" },
+    { "ma": "ch", "ten": "① Cơ hội" },
+    { "ma": "dt", "ten": "② Đào tạo 15'" },
+    { "ma": "bc", "ten": "Báo cáo & dashboard" },
+    { "ma": "cli", "ten": "Dòng lệnh" }
+  ],
+  "prompts": [
+    {
+      "nhom": "auto",
+      "ten": "Gõ một câu ngắn là xong",
+      "kieu": "chuẩn",
+      "noi_dung": "chấm giúp tôi 10 cuộc của team Mũi tuần này"
+    },
+    {
+      "nhom": "auto",
+      "ten": "Chỉ cần nhánh cơ hội",
+      "kieu": "thường",
+      "noi_dung": "lọc giúp tôi khách còn gọi lại được trong đống cuộc không chốt tuần này"
+    },
+    {
+      "nhom": "auto",
+      "ten": "Trả lời gộp một dòng",
+      "kieu": "thường",
+      "noi_dung": "1c 2a 3a"
+    },
+    {
+      "nhom": "auto",
+      "ten": "Lối tắt — chấm hết bằng mặc định",
+      "kieu": "thường",
+      "noi_dung": "cứ chấm hết đi, em in bản chấm cho anh xem"
+    },
+    {
+      "nhom": "boc",
+      "ten": "Bóc tách một bản ghi",
+      "kieu": "chuẩn",
+      "noi_dung": "Bóc tách bản ghi này thành hội thoại chuẩn để chấm.\n\nYêu cầu:\n- Mỗi lượt lời một dòng: [mm:ss] NV/KH: nguyên văn\n- ⛔ KHÔNG sửa chính tả của khách, KHÔNG bỏ từ đệm, KHÔNG viết gọn lại\n- Không rõ ai nói thì ghi [?], ⛔ đừng đoán\n- Đánh dấu mất tiếng:  [02:10] [KHÔNG NGHE ĐƯỢC 14s]\n- Đánh dấu im lặng dài: [03:40] [IM LẶNG 6s]\n- Ẩn danh ngay khi bóc: tên → [tên], số → [số], nhưng GIỮ NGUYÊN cấu trúc câu\n\nCuối bản ghi ghi ba dòng: tổng thời lượng · % thời lượng khách nói · số đoạn mất tiếng"
+    },
+    {
+      "nhom": "boc",
+      "ten": "Loại cuộc không chấm được",
+      "kieu": "thường",
+      "noi_dung": "Soát các bản ghi này, loại ra những bản không chấm được.\n\nLoại khi: mất > 10% thời lượng · cuộc dưới 20 giây · không nghe máy.\nGiữ nhưng chấm một phần khi: mất 5–10% · khách cúp giữa chừng.\n\nIn ra: số cuộc chấm được / tổng · từng cuộc bị loại kèm LÝ DO.\n⛔ Không giấu phần bị loại — nó làm tỷ lệ đạt đẹp lên mà không ai biết."
+    },
+    {
+      "nhom": "boc",
+      "ten": "Xin trường dữ liệu còn thiếu",
+      "kieu": "thường",
+      "noi_dung": "Để chấm đủ tôi còn thiếu mấy trường. Soạn tin nhắn xin dữ liệu:\n\n- Gửi: người phụ trách CRM / tổng đài\n- Cần: mã nhân viên · kết quả cuộc gọi · lần gọi thứ mấy · nhóm dịch vụ · mã chiến dịch\n- Nói rõ thiếu mỗi trường thì MẤT khả năng kết luận gì\n\nViết ngắn như tin nhắn nội bộ."
+    },
+    {
+      "nhom": "cham",
+      "ten": "Chấm một cuộc gọi",
+      "kieu": "★ bắt buộc",
+      "noi_dung": "Chấm cuộc gọi này theo bộ chỉ số.\n\nVới mỗi tiêu chí K1–K6: ✓ đạt / ✗ chưa đạt / — không đủ căn cứ.\n\n⛔ Mỗi ô ✗ BẮT BUỘC có một trong hai:\n   - trích dẫn [mm:ss] NV/KH: \"nguyên văn\"\n   - hoặc phạm vi đã soát (với tiêu chí dạng vắng mặt)\nvà một dòng giải thích.\n\n⛔ Không chấm điểm số, không tính trung bình.\nSoát cờ đỏ R1–R6 trước. Có cờ đỏ thì đánh dấu cả cuộc CHƯA ĐẠT và chuyển ngay."
+    },
+    {
+      "nhom": "cham",
+      "ten": "Chấm cả mẫu nhiều cuộc",
+      "kieu": "chuẩn",
+      "noi_dung": "Chấm [n] cuộc trong mẫu này.\n\nIn ba phần:\n① BẢNG TỔNG — tỷ lệ đạt từng nhóm K, LUÔN kèm mẫu số (vd 26/60 · 43%)\n② TỪNG CUỘC — bảng chấm có trích dẫn\n③ 🚩 CỜ ĐỎ — liệt kê từng cuộc, ⛔ KHÔNG gộp thành một con số\n\nĐầu báo cáo in đủ BA DÒNG BẮT BUỘC: kiểu mẫu · cỡ mẫu (+ số cuộc loại và lý do) · nguồn và kỳ.\n\nCuối cùng nói rõ: với cỡ mẫu này, tôi được kết luận tới đâu?"
+    },
+    {
+      "nhom": "cham",
+      "ten": "Chấm nhanh ba tiêu chí",
+      "kieu": "rút gọn",
+      "noi_dung": "Chấm nhanh [n] cuộc, chỉ ba tiêu chí đắt nhất:\n  K1.3 xin phép thời gian\n  K2.1 hỏi nhu cầu trước khi báo giá\n  K5.1 lời mời hẹn cụ thể có ngày giờ\n\nCộng soát cờ đỏ R1–R6.\n\nGhi rõ đầu báo cáo: \"bản chấm rút gọn 3 tiêu chí, không phải bản chấm đầy đủ\"."
+    },
+    {
+      "nhom": "cham",
+      "ten": "Khi chỉ có bản text",
+      "kieu": "⛔ giới hạn",
+      "noi_dung": "Mẫu này chỉ có bản text, không có file ghi âm.\n\n- Chấm K1–K5 bình thường\n- Cả nhóm K6 ghi: — [KHÔNG ĐỦ CĂN CỨ] + một dòng nói rõ cần audio\n- ⛔ KHÔNG viết bất kỳ câu nào về giọng, thái độ, cảm xúc, sự kiên nhẫn\n- K4.3 \"không tranh cãi\" chỉ chấm ✗ khi có CÂU CHỮ tranh cãi, ⛔ không chấm theo giọng"
+    },
+    {
+      "nhom": "cham",
+      "ten": "Soát riêng cờ đỏ",
+      "kieu": "⛔ rủi ro",
+      "noi_dung": "Soát riêng cờ đỏ trong [n] cuộc này. Chỉ tìm R1–R6:\n\nR1 cam kết chắc chắn kết quả điều trị\nR2 nói sai giá / sai ưu đãi\nR3 gắt, mỉa, tranh cãi với khách\nR4 tiết lộ thông tin khách khác\nR5 bịa bằng cấp bác sĩ / giải thưởng / số ca\nR6 gọi lại khách đã yêu cầu đừng gọi nữa\n\nMỗi cờ đỏ in: mã cuộc · mã NV · 🚩 R-x · [mm:ss] nguyên văn.\n⛔ KHÔNG diễn giải lại lời nói. ⛔ KHÔNG đề xuất hình thức xử lý."
+    },
+    {
+      "nhom": "ch",
+      "ten": "Lọc cơ hội từ một mẫu",
+      "kieu": "★ nhánh ①",
+      "noi_dung": "Lọc cơ hội từ [n] cuộc không chốt được này.\n\nPhân vào sáu nhóm C1–C6. Chỉ C1–C4 là cơ hội.\n\nMỗi dòng cơ hội phải đủ bảy thứ:\n  mã KH · mã NV · ngày · nhóm C\n  TÍN HIỆU   [mm:ss] nguyên văn câu khách nói\n  LÝ DO THẬT (suy từ ngữ cảnh, không chép lại lời khách)\n  GỌI LẠI    thời điểm đề xuất + căn cứ\n  GÓC VÀO    mở đầu bằng gì, ⛔ không lặp kịch bản lần đầu\n  ƯU TIÊN    cao / vừa / thấp\n\n⛔ Không có TÍN HIỆU trích dẫn được thì KHÔNG đưa vào danh sách.\nSoát DNC trước."
+    },
+    {
+      "nhom": "ch",
+      "ten": "Đào lý do thật",
+      "kieu": "thường",
+      "noi_dung": "Khách từ chối bằng câu \"[dán nguyên văn]\".\n\nĐọc đoạn NGAY TRƯỚC câu đó và cho tôi biết:\n- Khách vừa hỏi gì trước khi từ chối?\n- Có hỏi trả góp, hỏi so sánh, hỏi thời gian hồi phục không?\n- Lý do thật nhiều khả năng là gì — và dựa vào câu nào để nói thế?\n\n⛔ Không đủ căn cứ thì nói thẳng, xếp ưu tiên thấp."
+    },
+    {
+      "nhom": "ch",
+      "ten": "Soát DNC",
+      "kieu": "⛔ bắt buộc",
+      "noi_dung": "Soát [n] cuộc này, tìm mọi trường hợp phải đưa vào DNC:\n\n- Khách nói đừng gọi nữa / bỏ số ra / làm phiền quá\n- Khách yêu cầu xoá dữ liệu\n- Khách gắt vì bị gọi nhiều lần\n- Sai số nhưng người nghe yêu cầu không gọi lại\n\nMỗi dòng: 🚫 DNC · mã KH · [mm:ss] nguyên văn.\nRồi soạn tin báo người phụ trách CRM để gỡ trong 24h.\n\n⛔ DNC không có ngoại lệ, kể cả khách trông rất tiềm năng."
+    },
+    {
+      "nhom": "ch",
+      "ten": "Soạn góc tiếp cận gọi lại",
+      "kieu": "thường",
+      "noi_dung": "Khách KH-xxx thuộc nhóm [C1–C4], lý do thật là [...].\n\nSoạn góc vào cho cuộc gọi lại:\n- Câu mở đầu bám đúng lý do thật, ⛔ KHÔNG mở đầu như lần trước\n- Một câu nhắc lại điều khách đã quan tâm (lấy từ trích dẫn)\n- Lời mời hẹn CỤ THỂ có ngày giờ\n- Một đường lui nếu khách vẫn chưa sẵn sàng\n\n⛔ Không hứa ưu đãi chưa có thật."
+    },
+    {
+      "nhom": "dt",
+      "ten": "Chọn đúng một lỗi để dạy",
+      "kieu": "★ nhánh ②",
+      "noi_dung": "Đây là bản chấm 5 cuộc của NV-xx. Chọn MỘT kỹ năng để dạy tuần này.\n\nThứ tự ưu tiên:\n① cờ đỏ → xử ngay, không chờ buổi đào tạo\n② lỗi chặn cả cuộc (K1.3 xin phép, K2.1 hỏi trước khi báo giá)\n③ lỗi nối thẳng doanh số (K5.1 lời mời hẹn cụ thể)\n④ lỗi lặp lại ≥3/5 cuộc\n⑤ phần còn lại — để tuần sau\n\nNói rõ vì sao chọn lỗi đó, và liệt kê những lỗi CỐ Ý để lại tuần sau.\n⛔ Không gộp nhiều lỗi vào một buổi."
+    },
+    {
+      "nhom": "dt",
+      "ten": "Soạn giáo án 15 phút",
+      "kieu": "chuẩn",
+      "noi_dung": "Soạn giáo án 15 phút cho NV-xx, kỹ năng [mã tiêu chí].\n\n① 0–3'  NGHE LẠI — chỉ rõ cuộc nào, đoạn [mm:ss]–[mm:ss], dán nguyên văn\n② 3–7'  CHỈ RA  — lỗi là gì · hậu quả bằng CON SỐ · mẫu câu đúng\n③ 7–12' TẬP LẠI — 2 lượt role-play, ghi rõ quản lý đóng vai khách nói gì\n④ 12–15' TEST   — 3 tình huống ngắn, chấm Đạt/Chưa ngay tại chỗ\n\nKết thúc BẮT BUỘC có:\n  ĐO LẠI: [n] cuộc tiếp theo · hạn [ngày]\n  ĐẠT KHI: [tiêu chí đếm được]"
+    },
+    {
+      "nhom": "dt",
+      "ten": "Lỗi kỹ năng hay lỗi quy trình",
+      "kieu": "★ hay gặp",
+      "noi_dung": "Lỗi [mã tiêu chí] xuất hiện ở [n]/[tổng] nhân viên trong nhóm.\n\nPhân loại giúp tôi:\n- 1–2 người mắc, người khác không     → lỗi KỸ NĂNG, đào tạo 15'\n- quá nửa nhóm cùng mắc               → lỗi QUY TRÌNH, ⛔ đừng đào tạo từng người\n- mắc nhiều ở một nhóm dịch vụ        → kịch bản của dịch vụ đó\n- mắc nhiều ở khung giờ cuối ca       → tải việc, việc của quản lý\n\nNếu là lỗi quy trình: chỉ ra CHÍNH XÁC bước nào trong kịch bản đang thiếu."
+    },
+    {
+      "nhom": "dt",
+      "ten": "Đo lại sau đào tạo",
+      "kieu": "chuẩn",
+      "noi_dung": "NV-xx đã học kỹ năng [mã] ngày [ngày]. Đây là 5 cuộc sau đó.\n\nChấm LẠI đúng tiêu chí đó, cùng nhóm dịch vụ với lần trước.\n\n  ≥4/5  → kỹ năng đã vào, chuyển sang lỗi ưu tiên kế tiếp\n  2–3/5 → đang vào, giữ nguyên kỹ năng, thêm một buổi 15'\n  ≤1/5  → ⚠️ nhiều khả năng KHÔNG phải lỗi kỹ năng → soát lại kịch bản\n\n⛔ Dạy lần ba vẫn không chuyển thì NGỪNG dạy. ⛔ KHÔNG kết luận \"nhân viên không có khả năng\"."
+    },
+    {
+      "nhom": "dt",
+      "ten": "Viết nhận xét cho nhân viên đọc",
+      "kieu": "thường",
+      "noi_dung": "Viết lại phần nhận xét này để gửi trực tiếp cho NV-xx.\n\n- Viết về HÀNH VI trong cuộc gọi cụ thể, ⛔ không viết về con người\n- Mỗi nhận định kèm [mm:ss] nguyên văn\n- Nêu rõ một kỹ năng cần tập tuần này, không nêu nhiều\n- Kết bằng tiêu chí đo lại\n\n⛔ Không dùng: \"kỹ năng yếu\", \"thái độ kém\", \"cần cố gắng hơn\".\n⛔ Không đề xuất hình thức xử lý."
+    },
+    {
+      "nhom": "bc",
+      "ten": "Báo cáo tuần",
+      "kieu": "chuẩn",
+      "noi_dung": "Dựng báo cáo tuần từ bản chấm [n] cuộc.\n\n1. BA DÒNG BẮT BUỘC — kiểu mẫu · cỡ mẫu (+ số cuộc loại) · nguồn, kỳ, giờ cập nhật\n2. CHỈ SỐ TIẾN TRÌNH — tỷ lệ đạt 6 nhóm K, kèm mẫu số và kỳ trước\n3. 🚩 CỜ ĐỎ — từng cuộc, có trích dẫn\n4. NHÁNH ① CƠ HỘI\n5. NHÁNH ② ĐÀO TẠO — lỗi ưu tiên, ai học, giáo án\n6. ĐO LẠI KỲ TRƯỚC — kỹ năng đã dạy tuần trước: vào hay chưa\n7. GIẢ ĐỊNH & [CHỜ XÁC NHẬN]\n\n⛔ Mọi tỷ lệ phải có mẫu số."
+    },
+    {
+      "nhom": "bc",
+      "ten": "Truy một chỉ số đang tụt",
+      "kieu": "★ hay gặp",
+      "noi_dung": "Tỷ lệ hẹn tháng này tụt từ [x]% xuống [y]%. Truy giúp tôi.\n\nĐi theo thứ tự này, ⛔ đừng đoán nguyên nhân trước:\n① Cơ cấu mẫu có đổi không — có nhân viên mới vào không?\n② Nhóm K nào tụt cùng chiều với tỷ lệ hẹn?\n③ Tụt ở toàn khối hay chỉ một nhóm dịch vụ / một chiến dịch?\n④ Lọc riêng những cuộc trượt nhóm K đó, đọc trích dẫn\n⑤ Sau đó mới kết luận: lỗi kỹ năng hay lỗi kịch bản\n\nMỗi bước in kèm mẫu số."
+    },
+    {
+      "nhom": "bc",
+      "ten": "So hai kỳ",
+      "kieu": "thường",
+      "noi_dung": "So kỳ [A] với kỳ [B].\n\nTrước khi so, kiểm ba điều kiện:\n- Cùng kiểu chọn mẫu không?\n- Mỗi kỳ có đủ 30 cuộc không?\n- Cơ cấu nhân sự trong mẫu có đổi không?\n\nĐiều kiện nào không thoả thì nói rõ, ⛔ KHÔNG viết câu \"tăng/giảm\".\nCó nhân viên mới thì tách riêng cũ / mới."
+    },
+    {
+      "nhom": "bc",
+      "ten": "Khi bị yêu cầu xếp hạng",
+      "kieu": "⛔ ranh giới",
+      "noi_dung": "Trưởng khối muốn một bảng xếp hạng nhân viên theo điểm QC để xét thưởng.\n\nSoạn giúp tôi câu trả lời:\n- Nói rõ dữ liệu này dùng để DẠY, không dùng để XẾP\n- Nêu hệ quả thật: xếp hạng công khai làm nhân viên chọn cuộc dễ, né cuộc khó\n  → chỉ số đẹp lên, doanh số không đổi\n- Đưa thứ thay thế: tỷ lệ đạt từng nhóm kỹ năng + kỹ năng đang tập của từng người\n- Để họ quyết"
+    },
+    {
+      "nhom": "cli",
+      "ten": "Năm lệnh của qc.py",
+      "kieu": "dòng lệnh",
+      "noi_dung": "python tools/qc.py kiem   template/mau-5-cuoc.json          # cổng A 8 ô + cỡ mẫu\npython tools/qc.py cham   template/mau-5-cuoc.json          # bảng chấm K1-K6 + soát lỗi chấm\npython tools/qc.py cohoi  template/mau-5-cuoc.json          # nhánh ① cơ hội + DNC\npython tools/qc.py giaoan template/mau-5-cuoc.json NV-07    # nhánh ② chọn 1 lỗi + giáo án 15'\npython tools/qc.py tuan   template/mau-5-cuoc.json          # báo cáo tuần theo tiến trình\n\npython tools/gop-tham-khao.py                               # gộp tri thức"
+    }
+  ],
+  "prompt_ghi": "<p style=\"margin-bottom:0\"><b>Vì sao mọi prompt chấm đều bắt kèm trích dẫn.</b> Bản chấm này sẽ được đưa cho một người thật đọc về chính cuộc gọi của họ. Một nhận xét — kể cả nhận xét đúng — sẽ bị phản ứng, và cuộc nói chuyện biến thành tranh luận xem bản chấm có công bằng không. Một dòng <code>[01:12] NV: \"Gói này bên em 28 triệu chị nhé\"</code> thì không có gì để tranh luận, và buổi 15 phút đi thẳng vào việc tập lại.</p>",
+  "dieu_intro": "Năm điều này là phần dễ bỏ qua nhất khi cài, và cũng là phần làm agent này khác một khung chat biết tóm tắt. Đọc một lượt trước khi giao agent cho người khác dùng.",
+  "dieu": [
+    {
+      "pre": "Điều 1",
+      "h3": "Hai nhánh — và chúng cần hai thứ khác nhau",
+      "html": "<div class=\"note stop\"><p style=\"margin-bottom:0\"><b>Cùng một đống ghi âm, hai câu hỏi hoàn toàn khác nhau.</b> Nhánh ① hỏi <i>“còn gọi lại được ai?”</i> — nó đọc <b>lời của khách</b>. Nhánh ② hỏi <i>“dạy lại cái gì?”</i> — nó đọc <b>lời của nhân viên</b>. Trộn hai nhánh vào một báo cáo là cách làm cho cả hai đều mờ.</p></div><div class=\"vs\"><div class=\"good\"><div class=\"h\">① Tìm cơ hội</div><div class=\"w\">Đọc lời khách</div><p>Sáu kết cục <code>C1</code>–<code>C6</code>, chỉ bốn là cơ hội. Mỗi dòng phải có <b>tín hiệu trích dẫn được</b> và <b>lý do thật</b> — không phải lý do khách nói ra.</p><p class=\"me\">Ra: danh sách khách + thời điểm gọi lại + góc tiếp cận <span class=\"ar\">&rarr;</span> bàn giao <code>Agent-CRM-Automation</code></p></div><div class=\"good\"><div class=\"h\">② QC &amp; đào tạo</div><div class=\"w\">Đọc lời nhân viên</div><p>Chấm sáu nhóm <code>K1</code>–<code>K6</code> + cờ đỏ. Chọn <b>đúng một kỹ năng</b> để dạy, không dạy cả sáu lỗi cùng lúc.</p><p class=\"me\">Ra: giáo án 15 phút + bài test + <b>mốc đo lại</b> <span class=\"ar\">&rarr;</span> quản lý trực tiếp</p></div></div><div class=\"note warn\"><p style=\"margin-bottom:0\"><b>Một cuộc gọi có thể vào cả hai nhánh.</b> Cuộc <code>CG-2610-0147</code> trong mẫu vừa là cơ hội <code>C4</code> (khách hỏi trả góp), vừa là ca dạy <code>K2.1</code> (báo giá trước khi hỏi nhu cầu). Đó là trường hợp tốt nhất — cùng một bản ghi trả lời được cả hai câu hỏi.</p></div>"
+    },
+    {
+      "pre": "Điều 2",
+      "h3": "Trích dẫn — thứ duy nhất làm bản chấm khác một lời nhận xét",
+      "html": "<div class=\"vs\"><div class=\"bad\"><div class=\"h\">Nhận xét</div><div class=\"w\">Nghe có lý, và cãi được</div><p><i>“Bạn này tư vấn chưa tốt, chưa khai thác được nhu cầu khách.”</i></p><p class=\"me\">Nhân viên sẽ phản ứng, và buổi đào tạo biến thành cuộc tranh luận xem bản chấm có công bằng không</p></div><div class=\"good\"><div class=\"h\">Kết quả chấm</div><div class=\"w\">Không có gì để cãi</div><p><code>✗ K2.1</code><br><code>[01:12] NV: \"Gói này bên em 28 triệu chị nhé\"</code><br><code>[02:40] NV: \"Thế chị đang muốn làm vùng nào ạ?\"</code><br>→ câu hỏi nhu cầu đầu tiên xuất hiện <b>sau</b> lần báo giá đầu 88 giây</p><p class=\"me\">Buổi 15 phút đi thẳng vào việc tập lại</p></div></div><div class=\"note stop\"><p><b>Tiêu chí dạng VẮNG MẶT thì trích cái gì?</b> Một số tiêu chí trượt vì <b>một việc đã không xảy ra</b> — không đủ câu hỏi mở, không nhắc lại ý khách, chỉ mời hẹn một lần. Không có câu nào để trích, chính vì nó không có.</p><p style=\"margin-bottom:0\">→ Khi đó dùng <b>phạm vi đã soát</b>: <code>đã soát [00:00]–[06:52] tìm lượt lời NV nhắc lại ý khách — thấy 0 lần</code>. ⛔ Một ô <code>✗</code> phải có trích dẫn <b>hoặc</b> phạm vi đã soát — không được trống cả hai. Công cụ <code>qc.py cham</code> chặn đúng chỗ này.</p></div>"
+    },
+    {
+      "pre": "Điều 3",
+      "h3": "Hai chỗ agent sai tự tin nhất — ngữ điệu và cỡ mẫu",
+      "html": "<div class=\"grid g2\"><div class=\"cc\" style=\"border-top-color:var(--do)\"><span class=\"tag\">Chỗ sai 1</span><h3>Đoán ngữ điệu từ chữ</h3><p class=\"meta\">Chỉ có bản text thì đọc được: có hỏi nhu cầu trước khi báo giá không · có lời mời hẹn cụ thể không · có cắt lời không.</p><p class=\"meta\" style=\"margin-top:7px\">⛔ <b>Không đọc được:</b> giọng có gắt không · nói nhanh hay chậm · thái độ khi bị từ chối · khách có thật sự vui vẻ không.</p><p class=\"meta\" style=\"margin-top:7px\">→ Cả nhóm <code>K6</code> ghi <code>[KHÔNG ĐỦ CĂN CỨ]</code>, ⛔ không ghi <code>✗</code>.</p></div><div class=\"cc\" style=\"border-top-color:var(--do)\"><span class=\"tag\">Chỗ sai 2</span><h3>Kết luận quá cỡ mẫu</h3><div class=\"tw\" style=\"margin-top:4px\"><table style=\"min-width:0\"><tbody><tr><td>một cuộc gọi</td><td class=\"num\"><b>1</b></td></tr><tr class=\"hl\"><td>một <b>nhân viên</b></td><td class=\"num\"><b>5</b> cuộc / 14 ngày</td></tr><tr><td>một nhóm, một dịch vụ</td><td class=\"num\"><b>30</b></td></tr><tr><td>xu hướng hai kỳ</td><td class=\"num\"><b>30</b> mỗi kỳ</td></tr></tbody></table></div><p class=\"meta\" style=\"margin-top:7px\">Khách đang bực, gọi sai giờ, sai số, nghe mưa ồn — đủ thứ làm hỏng một cuộc.</p></div></div><div class=\"note stop\"><p style=\"margin-bottom:0\"><b>Hai lỗi này giống nhau ở chỗ nguy hiểm nhất: agent sai rất trôi chảy.</b> Nó viết <i>“nhân viên tỏ ra thiếu kiên nhẫn”</i> và <i>“bạn này yếu khâu chốt”</i> bằng đúng một giọng tự tin như khi nó viết một trích dẫn thật. Người đọc tin cả hai. Rồi một hôm nhân viên mở lại file audio, hoặc đếm lại số cuộc — và cả bản chấm mất uy tín, kể cả những phần đúng.</p></div>"
+    },
+    {
+      "pre": "Điều 4",
+      "h3": "Lỗi của người, hay lỗi của kịch bản",
+      "html": "<div class=\"note stop\"><p style=\"margin-bottom:0\"><b>Đây là câu hỏi tạo ra nhiều giá trị nhất của cả gói.</b> Đào tạo 12 người cho một lỗi mà <b>kịch bản</b> gây ra là tốn ba tiếng để tuần sau mắc lại y nguyên — và lần này thì mọi người đều tin rằng đào tạo không có tác dụng.</p></div><div class=\"tw\"><table style=\"min-width:560px\"><thead><tr><th>Dấu hiệu</th><th>Nhiều khả năng là</th><th>Xử</th></tr></thead><tbody><tr><td>1–2 người mắc, người khác không</td><td><b>Kỹ năng</b></td><td>Đào tạo 15'</td></tr><tr class=\"hl\"><td><b>Quá nửa nhóm</b> cùng mắc một lỗi</td><td><b>Quy trình / kịch bản</b></td><td>⛔ Đừng đào tạo từng người — sửa kịch bản</td></tr><tr><td>Mắc nhiều ở một nhóm dịch vụ</td><td>Kịch bản của dịch vụ đó</td><td>Soát riêng kịch bản đó</td></tr><tr><td>Mắc nhiều ở khung giờ cuối ca</td><td>Tải việc / mệt</td><td>Việc của quản lý, không phải đào tạo</td></tr></tbody></table></div><div class=\"note warn\"><p style=\"margin-bottom:0\"><b>Công cụ tự hỏi câu này.</b> Chạy <code>qc.py giaoan</code> trên mẫu 5 cuộc, nó báo: <i>“2/2 nhân viên trong mẫu cùng mắc K1.3 → ⚠ nhiều khả năng là LỖI KỊCH BẢN, ⛔ đừng đào tạo từng người”</i>. Đây cũng là <b>câu hỏi thứ hai ở cổng B</b> — quản lý trực tiếp phải trả lời trước khi giáo án được duyệt.</p></div>"
+    },
+    {
+      "pre": "Điều 5",
+      "h3": "Lọc và phân tích — không ra quyết định",
+      "html": "<div class=\"gates\"><div class=\"gate\"><span class=\"g-n\">A</span><b>Cổng A — Verify · 8 ô</b><span class=\"cond\">chạy TRƯỚC khi chấm</span><p>A1 bản ghi nghe được · A2 có nhãn NV/KH + mốc · A3 mã đã ẩn danh · <b>A4 có thông báo ghi âm hợp lệ</b> · A5 biết loại cuộc gọi · A6 đủ cỡ mẫu · A7 có kết quả từ CRM · A8 biết ai duyệt.</p><p style=\"margin-top:7px\"><b>A4 trượt → ⛔ DỪNG.</b> Không chấm, không trích dẫn, không đưa vào báo cáo. <b>A6 trượt</b> → vẫn chấm được từng cuộc, ⛔ không kết luận về người.</p></div><div class=\"gate\"><span class=\"g-n\">B</span><b>Cổng B — Quản lý trực tiếp duyệt</b><span class=\"cond\">chạy TRƯỚC khi dùng kết quả</span><p>In <b>hai thứ</b> rồi dừng: ① bản chấm có trích dẫn · ② thứ sẽ làm tiếp (danh sách cơ hội hoặc giáo án 15').</p><p style=\"margin-top:7px\">Ba câu phải hỏi: <i>“trích dẫn này có đúng ngữ cảnh không?”</i> · <i>“lỗi kỹ năng hay lỗi quy trình?”</i> · <i>“buổi 15 phút giao cho ai dạy, bao giờ?”</i></p></div></div><div class=\"note stop\"><p><b>Agent đưa bằng chứng và phương án. Người thật ký.</b> ⛔ Không đề xuất kỷ luật, cắt thưởng, điều chuyển. ⛔ Không dựng bảng xếp hạng nhân viên.</p><p style=\"margin-bottom:0\"><b>Vì sao luật này đáng giữ ngay cả khi bất tiện:</b> khoảnh khắc nhân viên tin rằng ghi âm được dùng để phạt, họ sẽ gọi để <b>không bị phạt</b> chứ không gọi để bán được hàng — nói đủ câu trong checklist, né khách khó, tránh câu hỏi khó. Chỉ số tiến trình đẹp lên, doanh số đứng yên, và dữ liệu đầu vào của chính agent này hỏng từ gốc.</p></div><div class=\"note warn\"><p style=\"margin-bottom:0\"><b>Quyền riêng tư là ranh giới cứng thứ hai.</b> Một bản ghi telesale thẩm mỹ chứa cùng lúc <b>dữ liệu cá nhân + thông tin sức khoẻ + dữ liệu lao động</b>. ⛔ Không đưa tên · SĐT · tình trạng sức khoẻ khách vào bất kỳ đầu ra nào — dùng <code>KH-001</code> · <code>NV-07</code>. Thư mục <code>out/</code> và mọi file audio đã bị chặn sẵn trong <code>.gitignore</code>.</p></div>"
+    },
+    {
+      "pre": "",
+      "h3": "Nửa tay — <code>qc.py</code> chặn bằng máy",
+      "html": "<div class=\"cc\" style=\"border-top-color:var(--accent-soft)\"><span class=\"tag\">Dòng lệnh</span><h3>Năm lệnh</h3><pre class=\"code\" style=\"max-height:none\">python tools/qc.py kiem   &lt;mau.json&gt;            # cổng A 8 ô + cỡ mẫu\npython tools/qc.py cham   &lt;mau.json&gt;            # bảng chấm + soát lỗi chấm\npython tools/qc.py cohoi  &lt;mau.json&gt;            # nhánh ① cơ hội + DNC\npython tools/qc.py giaoan &lt;mau.json&gt; NV-07      # nhánh ② giáo án 15'\npython tools/qc.py tuan   &lt;mau.json&gt;            # báo cáo tuần</pre><p class=\"meta\">Không cần thư viện ngoài. Mẫu 5 cuộc trong repo <b>cố ý</b> có một cuộc trượt cổng A ô A4 và một cờ đỏ R6 kèm DNC, để thấy cổng chặn hoạt động ngay lần chạy đầu.</p></div><div class=\"grid g2\" style=\"margin-top:14px\"><div class=\"cc\" style=\"border-top-color:var(--do)\"><span class=\"tag\">Tự chặn</span><h3>Bốn thứ script không cho qua</h3><p class=\"meta\">① Cuộc <b>chưa có thông báo ghi âm</b> → loại khỏi mọi lệnh chấm<br>② Ô <code>✗</code> <b>không trích dẫn và không phạm vi đã soát</b> → báo lỗi, coi như chưa chấm<br>③ Mẫu <b>chỉ có text mà chấm K6</b> → báo lỗi<br>④ Cỡ mẫu chưa đủ → in thẳng <i>“chấm được từng cuộc, ⛔ chưa kết luận về người”</i></p></div><div class=\"cc\"><span class=\"tag\">Tự hỏi</span><h3>Câu hỏi script hỏi thay bạn</h3><p class=\"meta\">Mỗi lần dựng giáo án, <code>qc.py giaoan</code> đếm xem <b>bao nhiêu nhân viên trong mẫu cùng mắc lỗi đó</b> — và nếu quá nửa nhóm thì nó dừng lại nhắc rằng đây nhiều khả năng là lỗi kịch bản.</p><p class=\"meta\" style=\"margin-top:7px\">Nó cũng liệt kê những lỗi <b>cố ý để lại tuần sau</b>, để không ai bị cám dỗ dạy cả sáu lỗi trong một buổi.</p></div></div>"
+    }
+  ],
+  "muc": ["Cài đặt", "Prompt mẫu", "Năm điều phải biết", "Việc đang chặn"],
+  "chan_intro": "Agent cài xong là chấm được ngay. Nhưng có <b>ba việc phải làm trước khi dùng thật</b>, và vài ranh giới nó không bước qua.",
+  "chan": [
+    {
+      "muc": "🔴",
+      "viec": "<b>Xác nhận thông báo ghi âm hợp lệ</b> cho toàn bộ cuộc gọi đang định chấm",
+      "ai": "Pháp chế + CNTT",
+      "chan": "⛔ Cổng A ô A4 trượt → agent KHÔNG chấm, không trích dẫn, không đưa vào báo cáo",
+      "hl": true
+    },
+    {
+      "muc": "🔴",
+      "viec": "<b>Nạp kịch bản hiện hành</b> của từng nhóm dịch vụ, và <b>bảng giá / ưu đãi</b> đang áp dụng",
+      "ai": "Trưởng khối Telesale + Phòng Giá",
+      "chan": "K3.1 và K3.2 luôn ghi [KHÔNG ĐỦ CĂN CỨ] — và ⛔ <b>không phát hiện được cờ đỏ R2 sai giá</b>",
+      "hl": true
+    },
+    {
+      "muc": "🔴",
+      "viec": "<b>Chốt với khối rằng dữ liệu QC dùng để DẠY, không dùng để XẾP HẠNG hay xét thưởng</b>, nói rõ bằng văn bản",
+      "ai": "Trưởng khối + Nhân sự",
+      "chan": "Không chốt thì nhân viên sẽ gọi để không bị phạt — chỉ số đẹp lên, doanh số đứng yên",
+      "hl": true
+    },
+    {
+      "muc": "🟠",
+      "viec": "<b>Gắn mã nhân viên và kết quả cuộc gọi</b> vào bản ghi, ngay từ tổng đài",
+      "ai": "CNTT + CRM",
+      "chan": "Cổng A ô A3 và A7 — không nối được hành vi với tỷ lệ hẹn, mọi câu <i>“làm đúng bước này thì chốt tốt hơn”</i> đều không có căn cứ"
+    },
+    {
+      "muc": "🟠",
+      "viec": "<b>Lập danh sách DNC</b> và quy trình gỡ số trong 24h",
+      "ai": "CRM",
+      "chan": "Agent phát hiện được DNC trong bản ghi, nhưng không có chỗ để gỡ — và cờ đỏ R6 sẽ lặp lại"
+    },
+    {
+      "muc": "🟠",
+      "viec": "<b>Chốt mốc gọi lại</b> cho bốn nhóm C1–C4 (hiện đang dùng mặc định đề xuất)",
+      "ai": "Trưởng khối Telesale",
+      "chan": "Danh sách cơ hội vẫn ra, nhưng thời điểm gọi lại là giả định của agent chứ chưa ai ký"
+    },
+    {
+      "muc": "🟡",
+      "viec": "<b>Chốt ngưỡng của hai tiêu chí định lượng</b> — K2.3 lượt lời dài nhất ≤45 giây, K6.4 khách nói ≥30%",
+      "ai": "Trưởng khối Telesale",
+      "chan": "Hai ô này chấm theo mặc định của gói, có thể không hợp với loại dịch vụ của khối"
+    }
+  ],
+  "chan_ghi": [
+    {
+      "kieu": "stop",
+      "html": "<p style=\"margin-bottom:0\"><b>Dòng 🔴 thứ ba không phải thủ tục.</b> Nó là điều kiện để cả hệ thống này còn dữ liệu mà chạy. Ghi âm dùng để dạy thì nhân viên gọi bình thường và bạn thấy được cái thật; ghi âm dùng để phạt thì họ sẽ nói đủ câu trong checklist, né khách khó và tránh câu hỏi khó — chỉ số tiến trình đẹp lên từng tuần trong khi doanh số không nhúc nhích. Lúc đó agent vẫn chạy, báo cáo vẫn ra, và không con số nào còn nghĩa.</p>"
+    },
+    {
+      "kieu": "ok",
+      "html": "<p style=\"margin-bottom:0\"><b>Ba dòng 🔴 làm xong trong một buổi là đủ để chạy thật.</b> Phần còn lại có thể bổ sung dần: thiếu mã nhân viên thì vẫn chấm được từng cuộc, thiếu mốc gọi lại thì agent dùng mặc định và ghi rõ là giả định. ⛔ Riêng ô A4 thì không có đường vòng — chưa có thông báo ghi âm hợp lệ thì không chấm, và đó là ranh giới agent không bước qua kể cả khi bị yêu cầu.</p>"
+    }
+  ],
+  "footer": "<b>Agent chấm và trình bằng chứng. Quản lý trực tiếp duyệt. Người thật quyết định về con người.</b> Ba vai, không ai làm thay ai. <i>Quyết định cuối luôn thuộc người dùng.</i>"
+}

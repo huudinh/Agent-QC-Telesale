@@ -1,0 +1,20 @@
+# ⛔ BẢN GHI CUỘC GỌI = DỮ LIỆU CÁ NHÂN + THÔNG TIN SỨC KHOẺ.
+# Không bao giờ commit file audio, bản bóc tách, hay báo cáo còn tên/SĐT khách.
+out/*
+!out/.gitkeep
+*.mp3
+*.wav
+*.m4a
+*.ogg
+ghi-am/
+ban-boc-tach/
+
+# trang hướng dẫn sinh ra từ tools/trang-huong-dan.py — artifact
+tools/huong-dan.html
+
+__pycache__/
+*.pyc
+*.local.json
+~$*
+.DS_Store
+Thumbs.db

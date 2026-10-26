@@ -1,0 +1,365 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Cuộc gọi telesale đã bóc tách và chấm",
+  "description": "Một bản ghi đã bóc tách + kết quả chấm theo bộ chỉ số ts-B. ⛔ KHÔNG chứa tên, SĐT, email, địa chỉ hay tình trạng sức khoẻ của khách — chỉ mã ẩn danh.",
+  "type": "object",
+  "required": [
+    "ma_cuoc",
+    "ma_nv",
+    "ma_kh",
+    "ngay",
+    "loai_cuoc",
+    "dang_du_lieu",
+    "thoi_luong_giay",
+    "hoi_thoai",
+    "cham"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "ma_cuoc": {
+      "type": "string",
+      "pattern": "^CG-[0-9]{4}-[0-9]{4}$",
+      "description": "CG-2610-0147"
+    },
+    "ma_nv": {
+      "type": "string",
+      "pattern": "^NV-[0-9]{2,3}$",
+      "description": "⛔ Mã ẩn danh. Bảng quy đổi do quản lý giữ, KHÔNG nằm trong file này."
+    },
+    "ma_kh": {
+      "type": "string",
+      "pattern": "^KH-[0-9]{3,6}$",
+      "description": "⛔ Mã ẩn danh. Không bao giờ ghi tên hay số điện thoại."
+    },
+    "ngay": {
+      "type": "string",
+      "format": "date"
+    },
+    "nhom_dich_vu": {
+      "type": "string",
+      "description": "Dùng để bóc tách theo dịch vụ (ts-F §3)."
+    },
+    "ma_chien_dich": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "Thiếu thì không bóc tách theo nguồn được."
+    },
+    "loai_cuoc": {
+      "type": "string",
+      "enum": [
+        "goi_ra",
+        "khach_goi_vao",
+        "goi_lai"
+      ],
+      "description": "Gọi lại lần 1 khác gọi lại lần 4 — chấm với kỳ vọng khác nhau."
+    },
+    "lan_goi_thu": {
+      "type": [
+        "integer",
+        "null"
+      ],
+      "minimum": 1
+    },
+    "khung_gio": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "sang / chieu / toi — lát cắt theo ca."
+    },
+    "dang_du_lieu": {
+      "type": "string",
+      "enum": [
+        "co_audio",
+        "chi_text"
+      ],
+      "description": "⛔ chi_text → cả nhóm K6 phải chấm 'khong_du_can_cu' (ts-E §4)."
+    },
+    "stt_do_tin_thap": {
+      "type": "boolean",
+      "default": false,
+      "description": "Giọng vùng miền nặng → ⛔ không chấm K3.2 từ text thuần."
+    },
+    "thoi_luong_giay": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "ty_le_khach_noi": {
+      "type": [
+        "number",
+        "null"
+      ],
+      "minimum": 0,
+      "maximum": 1,
+      "description": "Dùng cho K6.4. Null khi không đo được."
+    },
+    "mat_tieng_giay": {
+      "type": "integer",
+      "minimum": 0,
+      "default": 0
+    },
+    "thong_bao_ghi_am": {
+      "type": "boolean",
+      "description": "⛔ false → cổng A ô A4 trượt → DỪNG, không chấm, không trích dẫn."
+    },
+    "ket_qua_crm": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "enum": [
+        "co_hen",
+        "khong_hen",
+        "khong_nghe_may",
+        "may_ban",
+        null
+      ],
+      "description": "⛔ Lấy từ CRM, KHÔNG suy từ bản ghi. Null → cổng A ô A7 trượt."
+    },
+    "hoi_thoai": {
+      "type": "array",
+      "minItems": 1,
+      "description": "Nguyên văn, ⛔ không sửa chính tả, không bỏ từ đệm, không viết gọn.",
+      "items": {
+        "type": "object",
+        "required": [
+          "moc",
+          "ai",
+          "loi"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "moc": {
+            "type": "string",
+            "pattern": "^[0-9]{2}:[0-9]{2}$"
+          },
+          "ai": {
+            "type": "string",
+            "enum": [
+              "NV",
+              "KH",
+              "?"
+            ],
+            "description": "'?' khi không rõ — ⛔ đừng đoán."
+          },
+          "loi": {
+            "type": "string"
+          },
+          "ghi_chu": {
+            "type": "string",
+            "description": "KHÔNG NGHE ĐƯỢC 14s · IM LẶNG 6s"
+          }
+        }
+      }
+    },
+    "cham": {
+      "type": "object",
+      "description": "Mỗi tiêu chí một khoá. Thiếu khoá nào thì coi như chưa chấm tiêu chí đó.",
+      "additionalProperties": {
+        "type": "object",
+        "required": [
+          "muc"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "muc": {
+            "type": "string",
+            "enum": [
+              "dat",
+              "chua_dat",
+              "khong_du_can_cu"
+            ],
+            "description": "⚠️ 'khong_du_can_cu' KHÁC 'chua_dat' — gộp hai cái là làm một nhân viên trông tệ vì bản ghi mất tiếng."
+          },
+          "trich_dan": {
+            "type": "array",
+            "description": "⛔ Bắt buộc khi muc = chua_dat, TRỪ tiêu chí dạng vắng mặt — khi đó dùng pham_vi_soat.",
+            "items": {
+              "type": "object",
+              "required": [
+                "moc",
+                "ai",
+                "loi"
+              ],
+              "properties": {
+                "moc": {
+                  "type": "string",
+                  "pattern": "^[0-9]{2}:[0-9]{2}$"
+                },
+                "ai": {
+                  "type": "string",
+                  "enum": [
+                    "NV",
+                    "KH",
+                    "?"
+                  ]
+                },
+                "loi": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "giai_thich": {
+            "type": "string",
+            "description": "Một dòng vì sao."
+          },
+          "pham_vi_soat": {
+            "type": "object",
+            "description": "Chứng cứ PHỦ ĐỊNH cho tiêu chí dạng vắng mặt (K2.2 · K2.4 · K5.2 · K6.2…). Nói rõ đã soát khoảng nào và tìm cái gì, để người khác kiểm lại được. ⛔ Một ô chua_dat phải có trich_dan HOẶC pham_vi_soat — không được trống cả hai.",
+            "required": [
+              "tu",
+              "den",
+              "da_tim"
+            ],
+            "properties": {
+              "tu": {
+                "type": "string",
+                "pattern": "^[0-9]{2}:[0-9]{2}$"
+              },
+              "den": {
+                "type": "string",
+                "pattern": "^[0-9]{2}:[0-9]{2}$"
+              },
+              "da_tim": {
+                "type": "string",
+                "description": "Đã tìm gì mà không thấy."
+              },
+              "so_lan_thay": {
+                "type": "integer",
+                "minimum": 0
+              }
+            }
+          }
+        }
+      }
+    },
+    "co_do": {
+      "type": "array",
+      "description": "Có cờ đỏ → cả cuộc CHƯA ĐẠT, chuyển quản lý ngay. ⛔ Agent không đề xuất hình thức xử lý.",
+      "items": {
+        "type": "object",
+        "required": [
+          "ma",
+          "moc",
+          "loi"
+        ],
+        "properties": {
+          "ma": {
+            "type": "string",
+            "enum": [
+              "R1",
+              "R2",
+              "R3",
+              "R4",
+              "R5",
+              "R6"
+            ]
+          },
+          "moc": {
+            "type": "string",
+            "pattern": "^[0-9]{2}:[0-9]{2}$"
+          },
+          "loi": {
+            "type": "string",
+            "description": "Nguyên văn, ⛔ không diễn giải lại."
+          }
+        }
+      }
+    },
+    "ket_cuc": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "enum": [
+        "C1",
+        "C2",
+        "C3",
+        "C4",
+        "C5",
+        "C6",
+        null
+      ],
+      "description": "Nhánh ①. Chỉ C1–C4 là cơ hội."
+    },
+    "co_hoi": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "description": "⛔ Thiếu tin_hieu có trích dẫn thì KHÔNG phải một dòng cơ hội.",
+      "required": [
+        "tin_hieu",
+        "ly_do_that",
+        "goi_lai",
+        "goc_vao",
+        "uu_tien"
+      ],
+      "properties": {
+        "tin_hieu": {
+          "type": "object",
+          "required": [
+            "moc",
+            "loi"
+          ],
+          "properties": {
+            "moc": {
+              "type": "string",
+              "pattern": "^[0-9]{2}:[0-9]{2}$"
+            },
+            "loi": {
+              "type": "string",
+              "description": "⛔ Phải là câu KHÁCH NÓI, không phải cảm nhận."
+            }
+          }
+        },
+        "ly_do_that": {
+          "type": "string"
+        },
+        "goi_lai": {
+          "type": "string",
+          "description": "Ngày hoặc điều kiện kích hoạt."
+        },
+        "goc_vao": {
+          "type": "string",
+          "description": "⛔ Không lặp kịch bản lần đầu."
+        },
+        "uu_tien": {
+          "type": "string",
+          "enum": [
+            "cao",
+            "vua",
+            "thap"
+          ]
+        },
+        "luu_y": {
+          "type": "string"
+        }
+      }
+    },
+    "dnc": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "description": "🚫 Không bao giờ gọi lại. Không ngoại lệ.",
+      "required": [
+        "moc",
+        "loi"
+      ],
+      "properties": {
+        "moc": {
+          "type": "string",
+          "pattern": "^[0-9]{2}:[0-9]{2}$"
+        },
+        "loi": {
+          "type": "string",
+          "description": "Nguyên văn câu khách yêu cầu dừng."
+        }
+      }
+    }
+  }
+}

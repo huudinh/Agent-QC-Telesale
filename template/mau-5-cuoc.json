@@ -1,0 +1,618 @@
+{
+  "mau": {
+    "ten": "Team Mũi — tuần 13–19/10/2026",
+    "kieu_chon": "ngau_nhien",
+    "ky": "2026-10-13..2026-10-19",
+    "nguon": "Tổng đài [CHỜ XÁC NHẬN] · CRM [CHỜ XÁC NHẬN]",
+    "cap_nhat": "2026-10-20 08:00",
+    "tong_cuoc_trong_ky": 240,
+    "loai_bo": [
+      {
+        "ma_cuoc": "CG-2610-0151",
+        "ly_do": "mất tiếng 22% thời lượng"
+      },
+      {
+        "ma_cuoc": "CG-2610-0152",
+        "ly_do": "cuộc gọi 14 giây, khách cúp ngay"
+      }
+    ],
+    "ghi_chu": "Mẫu dùng để chạy thử công cụ. CG-2610-0149 CỐ Ý để trượt cổng A ô A4 (chưa có thông báo ghi âm) — để thấy cổng chặn hoạt động ngay lần chạy đầu. CG-2610-0150 CỐ Ý có cờ đỏ R6 và DNC. Ba ô K2.4 · K5.2 · K6.4 của CG-2610-0147 dùng pham_vi_soat thay trích dẫn, vì đó là tiêu chí dạng vắng mặt (ts-B §5)."
+  },
+  "cuoc_goi": [
+    {
+      "ma_cuoc": "CG-2610-0147",
+      "ma_nv": "NV-07",
+      "ma_kh": "KH-114",
+      "ngay": "2026-10-14",
+      "nhom_dich_vu": "Mũi",
+      "ma_chien_dich": "CD-MUI-T10",
+      "loai_cuoc": "goi_ra",
+      "lan_goi_thu": 1,
+      "khung_gio": "chieu",
+      "dang_du_lieu": "co_audio",
+      "stt_do_tin_thap": false,
+      "thoi_luong_giay": 412,
+      "ty_le_khach_noi": 0.22,
+      "mat_tieng_giay": 0,
+      "thong_bao_ghi_am": true,
+      "ket_qua_crm": "khong_hen",
+      "hoi_thoai": [
+        {
+          "moc": "00:00",
+          "ai": "NV",
+          "loi": "Alo em chào chị, em [tên] gọi từ [đơn vị] ạ"
+        },
+        {
+          "moc": "00:06",
+          "ai": "KH",
+          "loi": "Ừ em"
+        },
+        {
+          "moc": "00:08",
+          "ai": "NV",
+          "loi": "Dạ chị cho em hỏi có phải chị [tên] không ạ?"
+        },
+        {
+          "moc": "00:12",
+          "ai": "KH",
+          "loi": "Đúng rồi em"
+        },
+        {
+          "moc": "01:12",
+          "ai": "NV",
+          "loi": "Gói này bên em 28 triệu chị nhé, đang có ưu đãi nữa"
+        },
+        {
+          "moc": "01:20",
+          "ai": "KH",
+          "loi": "Ừm… hai tám à"
+        },
+        {
+          "moc": "02:40",
+          "ai": "NV",
+          "loi": "Thế chị đang muốn làm vùng nào ạ?"
+        },
+        {
+          "moc": "04:18",
+          "ai": "KH",
+          "loi": "Em có trả góp không, chứ một lúc 30 triệu thì chị chịu"
+        },
+        {
+          "moc": "04:30",
+          "ai": "NV",
+          "loi": "Dạ cái này để em hỏi lại rồi báo chị sau ạ"
+        },
+        {
+          "moc": "05:02",
+          "ai": "KH",
+          "loi": "Ừ em gọi chị sau 6h tối nhé"
+        },
+        {
+          "moc": "06:40",
+          "ai": "NV",
+          "loi": "Vâng khi nào rảnh chị qua bên em nhé"
+        }
+      ],
+      "cham": {
+        "K1.1": {
+          "muc": "dat"
+        },
+        "K1.2": {
+          "muc": "dat"
+        },
+        "K1.3": {
+          "muc": "chua_dat",
+          "trich_dan": [
+            {
+              "moc": "00:08",
+              "ai": "NV",
+              "loi": "Dạ chị cho em hỏi có phải chị [tên] không ạ?"
+            }
+          ],
+          "giai_thich": "Vào thẳng nội dung, không có câu xin phép thời gian."
+        },
+        "K1.4": {
+          "muc": "dat"
+        },
+        "K2.1": {
+          "muc": "chua_dat",
+          "trich_dan": [
+            {
+              "moc": "01:12",
+              "ai": "NV",
+              "loi": "Gói này bên em 28 triệu chị nhé, đang có ưu đãi nữa"
+            },
+            {
+              "moc": "02:40",
+              "ai": "NV",
+              "loi": "Thế chị đang muốn làm vùng nào ạ?"
+            }
+          ],
+          "giai_thich": "Câu hỏi nhu cầu đầu tiên xuất hiện SAU lần báo giá đầu tiên 88 giây."
+        },
+        "K2.2": {
+          "muc": "chua_dat",
+          "trich_dan": [
+            {
+              "moc": "02:40",
+              "ai": "NV",
+              "loi": "Thế chị đang muốn làm vùng nào ạ?"
+            }
+          ],
+          "giai_thich": "Chỉ có 1 câu hỏi mở trong cả cuộc, yêu cầu tối thiểu 2."
+        },
+        "K2.3": {
+          "muc": "dat"
+        },
+        "K2.4": {
+          "muc": "chua_dat",
+          "trich_dan": [],
+          "giai_thich": "Không có lần nào nhắc lại ý khách.",
+          "pham_vi_soat": {
+            "tu": "00:00",
+            "den": "06:52",
+            "da_tim": "lượt lời NV nhắc lại ý khách",
+            "so_lan_thay": 0
+          }
+        },
+        "K3.1": {
+          "muc": "khong_du_can_cu",
+          "giai_thich": "Chưa có kịch bản hiện hành trong tri thức."
+        },
+        "K3.2": {
+          "muc": "khong_du_can_cu",
+          "giai_thich": "Chưa có bảng giá để đối chiếu — [CHỜ XÁC NHẬN]."
+        },
+        "K3.3": {
+          "muc": "dat"
+        },
+        "K3.4": {
+          "muc": "dat"
+        },
+        "K4.1": {
+          "muc": "chua_dat",
+          "trich_dan": [
+            {
+              "moc": "04:18",
+              "ai": "KH",
+              "loi": "Em có trả góp không, chứ một lúc 30 triệu thì chị chịu"
+            },
+            {
+              "moc": "04:30",
+              "ai": "NV",
+              "loi": "Dạ cái này để em hỏi lại rồi báo chị sau ạ"
+            }
+          ],
+          "giai_thich": "Khách nêu rào cản thanh toán, nhân viên không đào sâu thêm câu nào."
+        },
+        "K4.2": {
+          "muc": "chua_dat",
+          "trich_dan": [
+            {
+              "moc": "04:30",
+              "ai": "NV",
+              "loi": "Dạ cái này để em hỏi lại rồi báo chị sau ạ"
+            }
+          ],
+          "giai_thich": "Từ chối vì giá nhưng không xử ở tầng thanh toán."
+        },
+        "K4.3": {
+          "muc": "dat"
+        },
+        "K4.4": {
+          "muc": "dat"
+        },
+        "K5.1": {
+          "muc": "chua_dat",
+          "trich_dan": [
+            {
+              "moc": "06:40",
+              "ai": "NV",
+              "loi": "Vâng khi nào rảnh chị qua bên em nhé"
+            }
+          ],
+          "giai_thich": "Lời mời không có ngày giờ cụ thể."
+        },
+        "K5.2": {
+          "muc": "chua_dat",
+          "trich_dan": [],
+          "giai_thich": "Chỉ mời 1 lần.",
+          "pham_vi_soat": {
+            "tu": "00:00",
+            "den": "06:52",
+            "da_tim": "lời mời hẹn của NV",
+            "so_lan_thay": 1
+          }
+        },
+        "K5.3": {
+          "muc": "khong_du_can_cu",
+          "giai_thich": "Không có lịch hẹn nên không có gì để xác nhận lại."
+        },
+        "K5.4": {
+          "muc": "chua_dat",
+          "trich_dan": [
+            {
+              "moc": "06:40",
+              "ai": "NV",
+              "loi": "Vâng khi nào rảnh chị qua bên em nhé"
+            }
+          ],
+          "giai_thich": "Không hẹn rõ ngày gọi lại dù khách đã cho khung giờ."
+        },
+        "K6.1": {
+          "muc": "dat"
+        },
+        "K6.2": {
+          "muc": "dat"
+        },
+        "K6.3": {
+          "muc": "dat"
+        },
+        "K6.4": {
+          "muc": "chua_dat",
+          "trich_dan": [],
+          "giai_thich": "Khách chỉ chiếm 22% thời lượng nói, dưới ngưỡng 30%.",
+          "pham_vi_soat": {
+            "tu": "00:00",
+            "den": "06:52",
+            "da_tim": "thời lượng khách nói",
+            "so_lan_thay": 0
+          }
+        }
+      },
+      "co_do": [],
+      "ket_cuc": "C4",
+      "co_hoi": {
+        "tin_hieu": {
+          "moc": "04:18",
+          "loi": "Em có trả góp không, chứ một lúc 30 triệu thì chị chịu"
+        },
+        "ly_do_that": "Giá vượt khả năng trả MỘT LẦN — không phải không muốn làm.",
+        "goi_lai": "Khi có chương trình trả góp, hoặc sau 21 ngày",
+        "goc_vao": "Mở đầu bằng phương án thanh toán, ⛔ KHÔNG mở đầu bằng dịch vụ",
+        "uu_tien": "cao",
+        "luu_y": "[05:02] khách dặn gọi sau 6h tối"
+      },
+      "dnc": null
+    },
+    {
+      "ma_cuoc": "CG-2610-0148",
+      "ma_nv": "NV-07",
+      "ma_kh": "KH-118",
+      "ngay": "2026-10-15",
+      "nhom_dich_vu": "Mũi",
+      "ma_chien_dich": "CD-MUI-T10",
+      "loai_cuoc": "goi_ra",
+      "lan_goi_thu": 1,
+      "khung_gio": "sang",
+      "dang_du_lieu": "co_audio",
+      "thoi_luong_giay": 205,
+      "ty_le_khach_noi": 0.18,
+      "mat_tieng_giay": 0,
+      "thong_bao_ghi_am": true,
+      "ket_qua_crm": "khong_hen",
+      "hoi_thoai": [
+        {
+          "moc": "00:00",
+          "ai": "NV",
+          "loi": "Dạ em chào chị, em [tên] bên [đơn vị] ạ"
+        },
+        {
+          "moc": "00:05",
+          "ai": "KH",
+          "loi": "Sao em"
+        },
+        {
+          "moc": "00:40",
+          "ai": "NV",
+          "loi": "Bên em đang có gói [dịch vụ] 25 triệu chị ạ"
+        },
+        {
+          "moc": "01:30",
+          "ai": "KH",
+          "loi": "Chị đang bận, để ra Tết chị tính"
+        },
+        {
+          "moc": "01:36",
+          "ai": "NV",
+          "loi": "Dạ vâng, vậy em gọi lại chị sau ạ"
+        }
+      ],
+      "cham": {
+        "K1.3": {
+          "muc": "chua_dat",
+          "trich_dan": [
+            {
+              "moc": "00:40",
+              "ai": "NV",
+              "loi": "Bên em đang có gói [dịch vụ] 25 triệu chị ạ"
+            }
+          ],
+          "giai_thich": "Không xin phép thời gian, vào thẳng chào hàng."
+        },
+        "K2.1": {
+          "muc": "chua_dat",
+          "trich_dan": [
+            {
+              "moc": "00:40",
+              "ai": "NV",
+              "loi": "Bên em đang có gói [dịch vụ] 25 triệu chị ạ"
+            }
+          ],
+          "giai_thich": "Báo giá ở giây thứ 40, chưa có câu hỏi nhu cầu nào."
+        },
+        "K4.1": {
+          "muc": "chua_dat",
+          "trich_dan": [
+            {
+              "moc": "01:30",
+              "ai": "KH",
+              "loi": "Chị đang bận, để ra Tết chị tính"
+            }
+          ],
+          "giai_thich": "Không hỏi lại lý do thật, nhận từ chối luôn."
+        },
+        "K5.1": {
+          "muc": "chua_dat",
+          "trich_dan": [
+            {
+              "moc": "01:36",
+              "ai": "NV",
+              "loi": "Dạ vâng, vậy em gọi lại chị sau ạ"
+            }
+          ],
+          "giai_thich": "Không có lời mời hẹn nào."
+        },
+        "K5.4": {
+          "muc": "chua_dat",
+          "trich_dan": [
+            {
+              "moc": "01:36",
+              "ai": "NV",
+              "loi": "Dạ vâng, vậy em gọi lại chị sau ạ"
+            }
+          ],
+          "giai_thich": "Gọi lại sau là bao giờ — không chốt mốc."
+        }
+      },
+      "co_do": [],
+      "ket_cuc": "C3",
+      "co_hoi": {
+        "tin_hieu": {
+          "moc": "01:30",
+          "loi": "Chị đang bận, để ra Tết chị tính"
+        },
+        "ly_do_that": "Chưa phải thời điểm — không phải không có nhu cầu. Khách tự nêu mốc.",
+        "goi_lai": "Trước Tết 3 ngày theo mốc khách nói",
+        "goc_vao": "Nhắc đúng mốc khách đã hẹn, hỏi nhu cầu trước, ⛔ không báo giá trước",
+        "uu_tien": "vua"
+      },
+      "dnc": null
+    },
+    {
+      "ma_cuoc": "CG-2610-0149",
+      "ma_nv": "NV-11",
+      "ma_kh": "KH-203",
+      "ngay": "2026-10-16",
+      "nhom_dich_vu": "Mũi",
+      "ma_chien_dich": "CD-MUI-T10",
+      "loai_cuoc": "goi_ra",
+      "lan_goi_thu": 2,
+      "khung_gio": "toi",
+      "dang_du_lieu": "co_audio",
+      "thoi_luong_giay": 330,
+      "mat_tieng_giay": 0,
+      "thong_bao_ghi_am": false,
+      "ket_qua_crm": "khong_hen",
+      "hoi_thoai": [
+        {
+          "moc": "00:00",
+          "ai": "NV",
+          "loi": "Alo chị ạ"
+        }
+      ],
+      "cham": {},
+      "co_do": [],
+      "ket_cuc": null,
+      "co_hoi": null,
+      "dnc": null
+    },
+    {
+      "ma_cuoc": "CG-2610-0150",
+      "ma_nv": "NV-11",
+      "ma_kh": "KH-209",
+      "ngay": "2026-10-17",
+      "nhom_dich_vu": "Mũi",
+      "ma_chien_dich": "CD-MUI-T10",
+      "loai_cuoc": "goi_lai",
+      "lan_goi_thu": 4,
+      "khung_gio": "chieu",
+      "dang_du_lieu": "co_audio",
+      "thoi_luong_giay": 96,
+      "mat_tieng_giay": 0,
+      "thong_bao_ghi_am": true,
+      "ket_qua_crm": "khong_hen",
+      "hoi_thoai": [
+        {
+          "moc": "00:00",
+          "ai": "NV",
+          "loi": "Alo chị ơi em bên [đơn vị] đây ạ"
+        },
+        {
+          "moc": "00:04",
+          "ai": "KH",
+          "loi": "Sao gọi hoài vậy em, chị nói rồi mà"
+        },
+        {
+          "moc": "00:09",
+          "ai": "NV",
+          "loi": "Dạ em chỉ muốn báo chị chương trình mới thôi ạ"
+        },
+        {
+          "moc": "00:14",
+          "ai": "KH",
+          "loi": "Chị không có nhu cầu, em bỏ số chị ra giùm chị"
+        },
+        {
+          "moc": "00:20",
+          "ai": "NV",
+          "loi": "Dạ nhưng mà chương trình này tốt lắm chị, chị nghe em một chút"
+        },
+        {
+          "moc": "00:28",
+          "ai": "KH",
+          "loi": "Đã nói là không mà, phiền quá"
+        }
+      ],
+      "cham": {
+        "K1.3": {
+          "muc": "chua_dat",
+          "trich_dan": [
+            {
+              "moc": "00:09",
+              "ai": "NV",
+              "loi": "Dạ em chỉ muốn báo chị chương trình mới thôi ạ"
+            }
+          ],
+          "giai_thich": "Không xin phép thời gian."
+        },
+        "K4.3": {
+          "muc": "chua_dat",
+          "trich_dan": [
+            {
+              "moc": "00:20",
+              "ai": "NV",
+              "loi": "Dạ nhưng mà chương trình này tốt lắm chị, chị nghe em một chút"
+            }
+          ],
+          "giai_thich": "Khách đã từ chối rõ ràng, nhân viên vẫn nài thêm."
+        },
+        "K4.4": {
+          "muc": "chua_dat",
+          "trich_dan": [
+            {
+              "moc": "00:28",
+              "ai": "KH",
+              "loi": "Đã nói là không mà, phiền quá"
+            }
+          ],
+          "giai_thich": "Cuộc gọi kết thúc ở trạng thái khách khó chịu."
+        }
+      },
+      "co_do": [
+        {
+          "ma": "R6",
+          "moc": "00:04",
+          "loi": "Sao gọi hoài vậy em, chị nói rồi mà"
+        }
+      ],
+      "ket_cuc": "C5",
+      "co_hoi": null,
+      "dnc": {
+        "moc": "00:14",
+        "loi": "Chị không có nhu cầu, em bỏ số chị ra giùm chị"
+      }
+    },
+    {
+      "ma_cuoc": "CG-2610-0153",
+      "ma_nv": "NV-07",
+      "ma_kh": "KH-221",
+      "ngay": "2026-10-18",
+      "nhom_dich_vu": "Mũi",
+      "ma_chien_dich": "CD-MUI-T10",
+      "loai_cuoc": "khach_goi_vao",
+      "khung_gio": "sang",
+      "dang_du_lieu": "chi_text",
+      "stt_do_tin_thap": true,
+      "thoi_luong_giay": 380,
+      "mat_tieng_giay": 0,
+      "thong_bao_ghi_am": true,
+      "ket_qua_crm": "co_hen",
+      "hoi_thoai": [
+        {
+          "moc": "00:00",
+          "ai": "KH",
+          "loi": "Em ơi chị hỏi cái [dịch vụ] ấy"
+        },
+        {
+          "moc": "00:05",
+          "ai": "NV",
+          "loi": "Dạ chị đang quan tâm phần nào ạ, để em tư vấn đúng cho chị"
+        },
+        {
+          "moc": "03:40",
+          "ai": "NV",
+          "loi": "Dạ chiều mai 3 giờ em giữ chỗ cho chị nhé, chị qua bác sĩ xem trực tiếp"
+        },
+        {
+          "moc": "03:52",
+          "ai": "KH",
+          "loi": "Ừ được em"
+        },
+        {
+          "moc": "04:10",
+          "ai": "NV",
+          "loi": "Em nhắc lại là 15h ngày mai tại [địa chỉ] chị nhé"
+        }
+      ],
+      "cham": {
+        "K2.1": {
+          "muc": "dat",
+          "giai_thich": "Hỏi nhu cầu ngay giây thứ 5, trước mọi thông tin giá."
+        },
+        "K5.1": {
+          "muc": "dat",
+          "giai_thich": "Lời mời có ngày và giờ cụ thể."
+        },
+        "K5.3": {
+          "muc": "dat"
+        },
+        "K3.2": {
+          "muc": "khong_du_can_cu",
+          "giai_thich": "STT độ tin thấp + chưa có bảng giá đối chiếu."
+        },
+        "K6.1": {
+          "muc": "khong_du_can_cu",
+          "giai_thich": "Mẫu chỉ có bản text, không có audio."
+        },
+        "K6.2": {
+          "muc": "khong_du_can_cu",
+          "giai_thich": "Mẫu chỉ có bản text, không có audio."
+        },
+        "K6.3": {
+          "muc": "khong_du_can_cu",
+          "giai_thich": "Mẫu chỉ có bản text, không có audio."
+        },
+        "K6.4": {
+          "muc": "khong_du_can_cu",
+          "giai_thich": "Mẫu chỉ có bản text, không có audio."
+        }
+      },
+      "co_do": [],
+      "ket_cuc": null,
+      "co_hoi": null,
+      "dnc": null
+    }
+  ],
+  "gia_dinh": [
+    "Ngưỡng K2.3 (lượt lời dài nhất ≤45 giây) và K6.4 (khách nói ≥30%) là mặc định đề xuất, chưa có ai ký — [CHỜ XÁC NHẬN].",
+    "Mốc gọi lại C4 = 21 ngày là mặc định của ts-C §4, chưa chốt với trưởng khối."
+  ],
+  "cho_xac_nhan": [
+    {
+      "muc": "Kịch bản hiện hành của nhóm Mũi",
+      "ai_cap": "Trưởng khối Telesale",
+      "chan_gi": "K3.1 không chấm được, mọi cuộc đều ghi khong_du_can_cu"
+    },
+    {
+      "muc": "Bảng giá và ưu đãi đang áp dụng",
+      "ai_cap": "Phòng Giá",
+      "chan_gi": "K3.2 không chấm được, và không phát hiện được cờ đỏ R2"
+    },
+    {
+      "muc": "Tên tổng đài và CRM, người phụ trách dữ liệu",
+      "ai_cap": "CNTT",
+      "chan_gi": "Ba dòng bắt buộc của báo cáo chưa điền đủ"
+    }
+  ]
+}
